@@ -108,9 +108,8 @@
       submitBtn.textContent = "جاري الإرسال...";
 
       try {
-        // Detect if running locally or on GitHub Pages
-        const isLocal = location.hostname === "localhost" || location.hostname === "127.0.0.1";
-        const endpoint = isLocal ? "http://localhost:5000/send" : "http://84.8.114.255:5000/send";
+        // Always use your VM IP via Nginx (port 80)
+        const endpoint = "http://84.8.114.255/send";
 
         const res = await fetch(endpoint, {
           method: "POST",
