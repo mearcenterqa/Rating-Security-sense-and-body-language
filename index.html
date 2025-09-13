@@ -38,6 +38,7 @@
     input[type="radio"]{margin:5px;}
     button{background:var(--brand); color:#fff; padding:14px 25px; border:none; border-radius:8px; cursor:pointer; font-size:16px; font-weight:bold; display:block; margin:0 auto; font-family:"Noto Kufi Arabic",sans-serif;}
     button:hover{background:#50071c;}
+    button:disabled{background:#999; cursor:not-allowed;}
     footer.site-footer{background:var(--footer); color:var(--text);}
   </style>
 </head>
@@ -139,26 +140,32 @@ document.addEventListener("DOMContentLoaded", function(){
 document.getElementById("evaluationForm").addEventListener("submit", function(e){
   e.preventDefault();
 
+  const submitBtn = this.querySelector("button[type='submit']");
+  submitBtn.disabled = true;
+  submitBtn.textContent = "جاري الإرسال...";
+
   const data = new FormData(this);
 
   const templateParams = {
-  	course_name: data.get("course_name"),
-  	full_name: data.get("full_name"),
-  	q1: "محتوى الورشة التدريبية واضح و مفهوم يحقق الأهداف المرجوة:\n" + data.get("q1") + "\n\n",
-  	q2: "تمكن المدرب من الإلمام بالمحتوى وتوصيل المعلومات:\n" + data.get("q2") + "\n\n",
-  	q3: "قدرة المدرب على تحفيز المتدربين على التفاعل أثناء الورشة التدريبية:\n" + data.get("q3") + "\n\n",
-  	q4: "لأي مدى وافقت تجربة التدريب توقعاتك ؟:\n" + data.get("q4") + "\n\n",
-  	q5: "توصي بتنفيذ الورشة لزملائي؟:\n" + data.get("q5") + "\n\n",
-  	suggestions: "مقترحاتك:\n" + data.get("suggestions")
-    };
-
+    course_name: data.get("course_name"),
+    full_name: data.get("full_name"),
+    q1: "محتوى الورشة التدريبية واضح و مفهوم يحقق الأهداف المرجوة:\n" + data.get("q1") + "\n\n",
+    q2: "تمكن المدرب من الإلمام بالمحتوى وتوصيل المعلومات:\n" + data.get("q2") + "\n\n",
+    q3: "قدرة المدرب على تحفيز المتدربين على التفاعل أثناء الورشة التدريبية:\n" + data.get("q3") + "\n\n",
+    q4: "لأي مدى وافقت تجربة التدريب توقعاتك ؟:\n" + data.get("q4") + "\n\n",
+    q5: "توصي بتنفيذ الورشة لزملائي؟:\n" + data.get("q5") + "\n\n",
+    suggestions: "مقترحاتك:\n" + data.get("suggestions")
+  };
 
   emailjs.send("service_s58yzam", "template_emcq7hc", templateParams)
     .then(function(response) {
        alert("تم إرسال التقييم بنجاح ✅");
+       submitBtn.textContent = "تم الإرسال";
     }, function(error) {
        alert("فشل الإرسال ❌، الرجاء الاتصال بالدعم الفني");
        console.error("EmailJS Error:", error);
+       submitBtn.disabled = false;
+       submitBtn.textContent = "إرسال التقييم";
     });
 });
 </script>
