@@ -4,38 +4,64 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>تقييم الدورة التدريبية والمدرب</title>
+
+  <!-- خط Noto Kufi Arabic -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("5hHMA74hiOJLy1LMh"); // المفتاح العام من EmailJS
+    })();
+  </script>
+
   <style>
-    :root { --brand:#7a0a2a; }
-    body { font-family:"Noto Kufi Arabic",sans-serif; margin:0; background:#fff; color:#4a0b26; line-height:1.7; }
-    header { background:var(--brand); color:#fff; padding:30px 20px 12px; text-align:center; font-size:20px; font-weight:600; }
-    header .course-title { font-size:16px; font-weight:400; margin-top:6px; display:block; color:#ffe; }
-    .form-container { max-width:800px; margin:30px auto; background:#fdfdfd; border:2px solid var(--brand); border-radius:12px; padding:30px; box-shadow:0 4px 10px rgba(0,0,0,.1); }
-    .form-container h2 { text-align:center; color:var(--brand); margin-bottom:25px; font-size:22px; }
-    .question { margin-bottom:25px; }
-    .question label { font-weight:600; display:block; margin-bottom:10px; font-size:16px; }
-    input[type="text"], textarea { width:95%; padding:10px; border:1px solid #ccc; border-radius:6px; font-size:15px; display:block; margin:0 auto; font-family:"Noto Kufi Arabic",sans-serif; }
-    textarea { resize: vertical; }
-    .rating { display:flex; justify-content:space-between; flex-wrap:wrap; }
-    .rating label { flex:1; text-align:center; cursor:pointer; margin:5px 0; }
-    input[type="radio"] { margin:5px; }
-    button { background:var(--brand); color:#fff; padding:14px 25px; border:none; border-radius:8px; cursor:pointer; font-size:16px; font-weight:bold; display:block; margin:0 auto; font-family:"Noto Kufi Arabic",sans-serif; }
-    button:hover { background:#50071c; }
+    :root{
+      --brand:#7a0a2a;
+      --footer:#6f0c26;
+      --footer-bottom:#4c0718;
+      --divider:rgba(255,255,255,.25);
+      --text:#fff;
+    }
+    body{font-family:"Noto Kufi Arabic",sans-serif; margin:0; background:#fff; color:#4a0b26; line-height:1.7;}
+    header{background:var(--brand); color:#fff; padding:30px 20px 12px; text-align:center; font-size:20px; font-weight:600;}
+    header .course-title{font-size:16px; font-weight:400; margin-top:6px; display:block; color:#ffe;}
+    .form-container{max-width:800px; margin:30px auto; background:#fdfdfd; border:2px solid var(--brand); border-radius:12px; padding:30px; box-shadow:0 4px 10px rgba(0,0,0,.1);}
+    .form-container h2{text-align:center; color:var(--brand); margin-bottom:25px; font-size:22px;}
+    .question{margin-bottom:25px;}
+    .question label{font-weight:600; display:block; margin-bottom:10px; font-size:16px;}
+    input[type="text"], textarea, select{width:95%; padding:10px; border:1px solid #ccc; border-radius:6px; font-size:15px; display:block; margin:0 auto; font-family:"Noto Kufi Arabic",sans-serif;}
+    textarea{resize:vertical;}
+    .rating{display:flex; justify-content:space-between; flex-wrap:wrap;}
+    .rating label{flex:1; text-align:center; cursor:pointer; margin:5px 0;}
+    input[type="radio"]{margin:5px;}
+    button{background:var(--brand); color:#fff; padding:14px 25px; border:none; border-radius:8px; cursor:pointer; font-size:16px; font-weight:bold; display:block; margin:0 auto; font-family:"Noto Kufi Arabic",sans-serif;}
+    button:hover{background:#50071c;}
+    footer.site-footer{background:var(--footer); color:var(--text);}
   </style>
 </head>
 <body>
+
   <header>
     تقييم الدورة التدريبية والمدرب
-    <span class="course-title">للدورة التدريبية: "الحس الأمني ولغة الجسد"</span>
+    <span class="course-title" id="courseTitle">الحس الأمني ولغة الجسد</span>
   </header>
 
   <div class="form-container">
     <h2>استمارة التقييم</h2>
     <form id="evaluationForm">
-      <input type="hidden" name="course_name" value="الحس الأمني ولغة الجسد">
-      <div class="question"><label>الاسم الكامل:*</label><input type="text" name="full_name" placeholder="اكتب اسمك الكامل" required></div>
-      <div class="note">(الاجابة رقم 5 هي الأعلى ورقم 1 الأدنى)*</div>
 
+      <!-- حقل مخفي يحمل اسم الدورة -->
+      <input type="hidden" name="course_name" id="courseNameInput">
+
+      <div class="question">
+        <label>الاسم الكامل:*</label>
+        <input type="text" name="full_name" placeholder="اكتب اسمك الكامل" required>
+      </div>
+
+      <div class="note">*(الاجابة رقم 5 هي الأعلى ورقم 1 الأدنى)</div>
+      
       <div class="question">
         <label>محتوى الورشة التدريبية واضح و مفهوم يحقق الأهداف المرجوة*</label>
         <div class="rating">
@@ -88,52 +114,54 @@
         </div>
       </div>
 
-      <div class="question"><label>مقترحاتك؟*</label><textarea name="training_feedback" rows="4" required></textarea></div>
+      <div class="question">
+        <label>مقترحاتك؟*</label>
+        <textarea name="suggestions" rows="4" required></textarea>
+      </div>
 
       <button type="submit">إرسال التقييم</button>
     </form>
   </div>
 
-  <footer style="background:#4a0d23; padding:30px 0; text-align:center; color:#fff;">
-    <p style="margin:0; font-size:14px; color:#ddd;">جميع الحقوق محفوظة لمركز مير للاستشارات والتدريب</p>
+	<footer style="background:#4a0d23; padding:30px 0; text-align:center; color:#fff;">
+    <p style="margin:0; font-size:14px; color:#ddd;">
+      جميع الحقوق محفوظة لمركز مير للاستشارات والتدريب
+    </p>
   </footer>
 
-  <script>
-    document.getElementById("evaluationForm").addEventListener("submit", async function(e) {
-      e.preventDefault();
-      const form = new FormData(this);
-      const data = Object.fromEntries(form.entries());
-      const submitBtn = this.querySelector("button[type='submit']");
-      submitBtn.disabled = true;
-      submitBtn.textContent = "جاري الإرسال...";
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  // اجعل الحقل المخفي يلتقط اسم الدورة من الهيدر تلقائياً
+  const courseTitle = document.getElementById("courseTitle").textContent.trim();
+  document.getElementById("courseNameInput").value = courseTitle;
+});
 
-      try {
-        // Always use your VM IP via Nginx (port 80)
-        const endpoint = "http://84.8.114.255/send";
+document.getElementById("evaluationForm").addEventListener("submit", function(e){
+  e.preventDefault();
 
-        const res = await fetch(endpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data)
-        });
+  const data = new FormData(this);
 
-        const result = await res.json();
+  const templateParams = {
+  	course_name: data.get("course_name"),
+  	full_name: data.get("full_name"),
+  	q1: "محتوى الورشة التدريبية واضح و مفهوم يحقق الأهداف المرجوة:\n" + data.get("q1") + "\n\n",
+  	q2: "تمكن المدرب من الإلمام بالمحتوى وتوصيل المعلومات:\n" + data.get("q2") + "\n\n",
+  	q3: "قدرة المدرب على تحفيز المتدربين على التفاعل أثناء الورشة التدريبية:\n" + data.get("q3") + "\n\n",
+  	q4: "لأي مدى وافقت تجربة التدريب توقعاتك ؟:\n" + data.get("q4") + "\n\n",
+  	q5: "توصي بتنفيذ الورشة لزملائي؟:\n" + data.get("q5") + "\n\n",
+  	suggestions: "مقترحاتك:\n" + data.get("suggestions")
+    };
 
-        if (result.success) {
-          alert(result.message);
-          this.reset();
-        } else {
-          console.error(result);
-          alert("❌ فشل الإرسال: " + (result.message || "خطأ"));
-        }
-      } catch(err) {
-        console.error(err);
-        alert("⚠️ تعذر الاتصال بالخادم. تأكد أن الخادم يعمل وأنك فتحت المنافذ.");
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "إرسال التقييم";
-      }
+
+  emailjs.send("service_s58yzam", "template_emcq7hc", templateParams)
+    .then(function(response) {
+       alert("تم إرسال التقييم بنجاح ✅");
+    }, function(error) {
+       alert("فشل الإرسال ❌، الرجاء الاتصال بالدعم الفني");
+       console.error("EmailJS Error:", error);
     });
-  </script>
+});
+</script>
+
 </body>
 </html>
